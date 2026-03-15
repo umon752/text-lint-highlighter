@@ -1,0 +1,32 @@
+# Copilot agent internals
+.agents/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment & secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Node (in case dependencies are added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

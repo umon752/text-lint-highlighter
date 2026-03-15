@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Lint Highlighter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-top">
+        <h1 class="title">
+          <span class="title-mark"></span>
+          <span class="title-text">Text Lint<em>Highlighter</em></span>
+        </h1>
+        <div class="action-buttons">
+          <button id="btn-run" class="btn btn-primary">執行檢查</button>
+          <button id="btn-clear" class="btn btn-ghost">清除</button>
+        </div>
+      </div>
+      <div id="result-banner" class="result-banner hidden"></div>
+    </header>
+
+    <section class="rules-section">
+      <div class="rules-header">
+        <span class="section-title">規則列表</span>
+        <button id="btn-add" class="btn btn-add">＋ 新增規則</button>
+      </div>
+      <ul id="rules-list" class="rules-list">
+        <!-- 規則項目由 popup.js 渲染 -->
+      </ul>
+      <p id="empty-hint" class="empty-hint hidden">尚無規則，請點擊「新增規則」</p>
+    </section>
+  </div>
+
+  <!-- 新增 / 編輯規則表單 -->
+  <div id="rule-form-overlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2 id="form-title" class="modal-title">新增規則</h2>
+      <form id="rule-form" novalidate>
+        <input type="hidden" id="rule-id">
+
+        <div class="form-group">
+          <label for="rule-name">規則名稱</label>
+          <input type="text" id="rule-name" placeholder="例如：多餘空格" maxlength="30" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rule-type">規則類型</label>
+          <select id="rule-type">
+            <option value="cjk-extra-space">中文間多餘半形空格（內建）</option>
+            <option value="cjk-missing-space">中英文／數字間缺少空格（內建）</option>
+            <option value="keyword">關鍵字比對</option>
+            <option value="regex">自訂 Regex</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="pattern-group">
+          <label for="rule-pattern" id="pattern-label">比對文字</label>
+          <input type="text" id="rule-pattern" placeholder="輸入文字或正規表達式">
+          <span id="pattern-hint" class="field-hint"></span>
+        </div>
+
+        <div class="form-group color-group">
+          <label for="rule-color">Highlight 顏色</label>
+          <div class="color-row">
+            <input type="color" id="rule-color" value="#ffeb3b">
+            <div class="color-presets">
+              <button type="button" class="color-preset" data-color="#ffeb3b" style="background:#ffeb3b" title="黃"></button>
+              <button type="button" class="color-preset" data-color="#ff8a80" style="background:#ff8a80" title="紅"></button>
+              <button type="button" class="color-preset" data-color="#80cbc4" style="background:#80cbc4" title="青綠"></button>
+              <button type="button" class="color-preset" data-color="#ce93d8" style="background:#ce93d8" title="紫"></button>
+              <button type="button" class="color-preset" data-color="#a5d6a7" style="background:#a5d6a7" title="綠"></button>
+              <button type="button" class="color-preset" data-color="#ffcc80" style="background:#ffcc80" title="橘"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">儲存</button>
+          <button type="button" id="btn-cancel" class="btn btn-ghost">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Text Lint Highlighter",
+  "version": "1.0.0",
+  "description": "在任意網頁上根據自訂規則 highlight 格式錯誤的文案（多餘空格、缺少空格、Regex、關鍵字）",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

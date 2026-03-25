@@ -77,8 +77,8 @@ function renderRules(rules) {
       </div>
       <div class="rule-actions">
         <input type="checkbox" class="rule-toggle" title="啟用 / 停用" ${rule.enabled ? 'checked' : ''}>
-        <button class="btn-icon btn-edit" title="編輯">✏️</button>
-        <button class="btn-icon danger btn-delete" title="刪除">🗑</button>
+        <button class="btn-icon btn-edit" title="編輯"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+        <button class="btn-icon danger btn-delete" title="刪除"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
       </div>
     `;
 

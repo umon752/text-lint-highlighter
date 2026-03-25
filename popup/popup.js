@@ -16,7 +16,7 @@ const DEFAULT_RULES = [
     name: '中文間多餘空格',
     type: 'cjk-extra-space',
     pattern: '',
-    color: '#ff8a80',
+    color: '#F58F5F',
     enabled: true,
   },
   {
@@ -24,7 +24,7 @@ const DEFAULT_RULES = [
     name: '中英文缺少空格',
     type: 'cjk-missing-space',
     pattern: '',
-    color: '#ffeb3b',
+    color: '#ffe693',
     enabled: true,
   },
 ];
@@ -118,7 +118,7 @@ function openForm(existing, rules) {
   nameInput.value    = existing?.name ?? '';
   typeSelect.value   = existing?.type ?? 'cjk-extra-space';
   patternInput.value = existing?.pattern ?? '';
-  colorInput.value   = existing?.color ?? '#ffeb3b';
+  colorInput.value   = existing?.color ?? '#586BA5';
 
   updatePatternGroup(typeSelect.value);
   syncColorPresets(colorInput.value);

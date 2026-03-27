@@ -1,6 +1,8 @@
 // ─── Highlight marker ────────────────────────────────────────────────────────
 const HIGHLIGHT_CLASS = 'tl-highlight-span';
 
+const MAX_MATCHES_PER_NODE = 500;
+
 // Tags whose text content should NOT be touched
 const SKIP_TAGS = new Set([
   'SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'OBJECT', 'EMBED',
@@ -36,9 +38,11 @@ function buildRegex(rule) {
         return new RegExp(rule.pattern, 'g');
 
       default:
+        console.warn(`[TextLint] 未知規則類型: ${rule.type}`);
         return null;
     }
-  } catch {
+  } catch (e) {
+    console.warn(`[TextLint] 規則 "${rule.name}" regex 編譯失敗:`, e.message);
     return null;
   }
 }
@@ -94,7 +98,7 @@ function applyHighlights(rules) {
       if (!regex) continue;
 
       let m;
-      while ((m = regex.exec(text)) !== null) {
+      while ((m = regex.exec(text)) !== null && matches.length < MAX_MATCHES_PER_NODE) {
         // Guard against zero-length matches causing infinite loops
         if (m[0].length === 0) {
           regex.lastIndex++;
@@ -134,13 +138,11 @@ function applyHighlights(rules) {
       }
       const span = document.createElement('span');
       span.className = HIGHLIGHT_CLASS;
-      span.style.cssText = [
-        `background-color:${m.color}`,
-        'color:#000',
-        'border-radius:2px',
-        'padding:0 1px',
-        'outline:1px solid rgba(0,0,0,0.15)',
-      ].join(';');
+      span.style.backgroundColor = m.color;
+      span.style.color = '#000';
+      span.style.borderRadius = '2px';
+      span.style.padding = '0 1px';
+      span.style.outline = '1px solid rgba(0,0,0,0.15)';
       span.title    = `規則：${m.name}`;
       span.setAttribute('data-tl-rule', m.name);
       span.textContent = m.text;
@@ -170,9 +172,11 @@ function clearHighlights() {
 
 // ─── Message listener ─────────────────────────────────────────────────────────
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (sender.id !== chrome.runtime.id) return;
   if (message.action === 'run') {
-    const count = applyHighlights(message.rules ?? []);
+    if (!Array.isArray(message.rules)) { sendResponse({ count: 0 }); return true; }
+    const count = applyHighlights(message.rules);
     sendResponse({ count });
   } else if (message.action === 'clear') {
     clearHighlights();

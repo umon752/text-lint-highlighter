@@ -2,6 +2,22 @@
 
 const STORAGE_KEY = 'tl_rules';
 
+const VALID_TYPES = new Set(['cjk-extra-space', 'cjk-missing-space', 'keyword', 'regex']);
+const COLOR_HEX_RE = /^#[0-9a-f]{6}$/i;
+
+function validateRule(rule) {
+  return (
+    rule !== null &&
+    typeof rule === 'object' &&
+    typeof rule.id === 'string' &&
+    typeof rule.name === 'string' && rule.name.trim().length > 0 &&
+    VALID_TYPES.has(rule.type) &&
+    typeof rule.color === 'string' && COLOR_HEX_RE.test(rule.color) &&
+    typeof rule.pattern === 'string' &&
+    typeof rule.enabled === 'boolean'
+  );
+}
+
 const RULE_TYPE_LABELS = {
   'cjk-extra-space':   '中文間多餘空格',
   'cjk-missing-space': '中英文缺少空格',
@@ -39,7 +55,8 @@ async function loadRules() {
         chrome.storage.sync.set({ [STORAGE_KEY]: DEFAULT_RULES });
         resolve([...DEFAULT_RULES]);
       } else {
-        resolve(data[STORAGE_KEY]);
+        const raw = data[STORAGE_KEY];
+        resolve(Array.isArray(raw) ? raw.filter(validateRule) : []);
       }
     });
   });
@@ -70,7 +87,7 @@ function renderRules(rules) {
     li.dataset.id = rule.id;
 
     li.innerHTML = `
-      <span class="rule-color-dot" style="background:${rule.color}"></span>
+      <span class="rule-color-dot"></span>
       <div class="rule-info">
         <div class="rule-name">${escapeHtml(rule.name)}</div>
         <span class="rule-type-badge">${RULE_TYPE_LABELS[rule.type] ?? rule.type}</span>
@@ -81,6 +98,7 @@ function renderRules(rules) {
         <button class="btn-icon danger btn-delete" title="刪除"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
       </div>
     `;
+    li.querySelector('.rule-color-dot').style.backgroundColor = rule.color;
 
     li.querySelector('.rule-toggle').addEventListener('change', async (e) => {
       rule.enabled = e.target.checked;

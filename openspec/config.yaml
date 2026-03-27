@@ -4,7 +4,6 @@ context: |
   技術棧：Vanilla JavaScript、HTML、CSS
   核心 API：chrome.storage、chrome.activeTab、Content Scripts
   專案類型：Chrome Extension (Manifest V3)
-locale: tw
 
 # Project context (optional)
 # This is shown to AI when creating artifacts.

@@ -19,8 +19,8 @@ function validateRule(rule) {
 }
 
 const RULE_TYPE_LABELS = {
-  'cjk-extra-space':   '中文間多餘空格',
-  'cjk-missing-space': '中英文缺少空格',
+  'cjk-extra-space':   '中文 + 中文｜中文 + 全形符號',
+  'cjk-missing-space': '中文 + 英文｜中文 + 數字',
   'keyword':           '關鍵字',
   'regex':             'Regex',
 };
@@ -29,7 +29,7 @@ const RULE_TYPE_LABELS = {
 const DEFAULT_RULES = [
   {
     id: 'builtin-extra-space',
-    name: '中文間多餘空格',
+    name: '多餘空格',
     type: 'cjk-extra-space',
     pattern: '',
     color: '#F58F5F',
@@ -37,7 +37,7 @@ const DEFAULT_RULES = [
   },
   {
     id: 'builtin-missing-space',
-    name: '中英文缺少空格',
+    name: '缺少空格',
     type: 'cjk-missing-space',
     pattern: '',
     color: '#ffe693',
